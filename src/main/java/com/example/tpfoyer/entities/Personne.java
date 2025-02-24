@@ -7,22 +7,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Chambre implements Serializable {
+public class Personne implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idChambre;
-    private long numeroChambre;
+    private int id;
+    private String nom;
+    private String prenom;
+    private int age;
+    @Temporal(TemporalType.DATE)
+    private Date dateofbirth;
     @Enumerated(EnumType.STRING)
-    private TypeChambre typeC;
-    @ManyToOne
-    private Bloc bloc;
-    @OneToMany
-    private Set<Reservation> reservations;
+    private Gender gender;
 }
