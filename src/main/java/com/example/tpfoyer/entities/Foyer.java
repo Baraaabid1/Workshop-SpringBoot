@@ -24,4 +24,9 @@ public class Foyer implements Serializable {
     private Set<Bloc> blocs;
     @OneToOne(mappedBy = "foyer")
     private Universite universite;
+
+    public void setUniversite(Universite universite) {
+        this.universite = universite;
+    }
+
 }

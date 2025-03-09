@@ -21,4 +21,8 @@ public class Universite implements Serializable {
     private String addresse;
     @OneToOne
     private Foyer foyer;
+    public void setFoyer(Foyer foyer) {
+        this.foyer = foyer;
+    }
+
 }

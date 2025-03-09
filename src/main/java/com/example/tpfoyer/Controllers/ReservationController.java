@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -28,5 +29,9 @@ public class ReservationController {
     @GetMapping("/dispaly-reservationbyid/{id}")
     public Reservation displayreservationbyid(@PathVariable("id") String idReservation){
         return reservationService.retrieveReservation(idReservation);
+    }
+    @GetMapping("/reservations/{anneeUniversitaire}/{nomUniversite}")
+    public List<Reservation> getReservationsParAnneeUniversitaire(@PathVariable Date anneeUniversitaire, @PathVariable String nomUniversite) {
+        return reservationService.getReservationParAnneeUniversitaireEtNomUniversite(anneeUniversitaire, nomUniversite);
     }
 }
