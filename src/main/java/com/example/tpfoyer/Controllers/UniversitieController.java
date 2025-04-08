@@ -2,6 +2,7 @@ package com.example.tpfoyer.Controllers;
 
 
 import com.example.tpfoyer.Services.IUniversiteService;
+import com.example.tpfoyer.entities.Foyer;
 import com.example.tpfoyer.entities.Universite;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,16 @@ public class UniversitieController {
     @PutMapping("/affecter-foyer/{idFoyer}/{nomUniversite}")
     public Universite affecterFoyerAUniversite(@PathVariable long idFoyer, @PathVariable String nomUniversite) {
         return universiteService.affecterFoyerAUniversite(idFoyer, nomUniversite);
+    }
+
+    @PutMapping("/desaffecter-foyer/{idUniversite}")
+    public Universite desaffecterFoyerAUniversite(@PathVariable long idUniversite) {
+        return universiteService.desaffecterFoyerAUniversite(idUniversite);
+    }
+
+    @PostMapping("/ajouter-foyer/{idUniversite}")
+    public Universite ajouterFoyerEtAffecterAUniversite(@RequestBody Foyer foyer, @PathVariable long idUniversite) {
+        return universiteService.ajouterFoyerEtAffecterAUniversite(foyer, idUniversite);
     }
 
 

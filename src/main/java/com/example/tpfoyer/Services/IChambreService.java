@@ -5,6 +5,7 @@ import com.example.tpfoyer.entities.TypeChambre;
 
 import java.util.List;
 
+
 public interface IChambreService {
     List<Chambre> retrieveAllChambres();
     Chambre addChambre(Chambre c);
@@ -14,4 +15,5 @@ public interface IChambreService {
     List<Chambre> getChambresNonReserveParNomUniversiteEtTypeChambre(String nomUniversite, TypeChambre type);
 
     List<Chambre> getChambresParBlocEtType(long idBloc, TypeChambre typeC);
+
 }

@@ -1,7 +1,9 @@
 package com.example.tpfoyer.Services;
 
+import com.example.tpfoyer.Repository.IBlocRepository;
 import com.example.tpfoyer.Repository.IFoyerRepository;
 import com.example.tpfoyer.Repository.IUniversiteRepository;
+import com.example.tpfoyer.entities.Bloc;
 import com.example.tpfoyer.entities.Foyer;
 import com.example.tpfoyer.entities.Universite;
 import lombok.AllArgsConstructor;
@@ -9,14 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class UniversiteService implements IUniversiteService{
+
     @Autowired
     IUniversiteRepository universiteRepository;
+
     @Autowired
     IFoyerRepository foyerRepository;
+
+    @Autowired
+    IBlocRepository blocRepository;
+
     @Override
     public List<Universite> retrieveAllUniversities() {
         return (List<Universite>) universiteRepository.findAll();
@@ -36,6 +45,7 @@ public class UniversiteService implements IUniversiteService{
     public Universite retrieveUniversite(long idUniversite) {
         return universiteRepository.findById(idUniversite).orElse(null);
     }
+
     @Override
     public Universite affecterFoyerAUniversite(long idFoyer, String nomUniversite) {
         Foyer foyer = foyerRepository.findById(idFoyer).get();
@@ -45,10 +55,39 @@ public class UniversiteService implements IUniversiteService{
             throw new RuntimeException("Foyer ou Université introuvable !");
         }
         universite.setFoyer(foyer);
-        foyer.setUniversite(universite);
 
         return universiteRepository.save(universite);
     }
 
-}
+    @Override
+    public Universite desaffecterFoyerAUniversite(long idUniversite) {
+        Universite universite = universiteRepository.findById(idUniversite).orElse(null);
+        if (universite == null) {
+            throw new RuntimeException("Université introuvable !");
+        }
+        universite.setFoyer(null);
+        return universiteRepository.save(universite);
+    }
 
+    @Override
+    public Universite ajouterFoyerEtAffecterAUniversite(Foyer foyer, long idUniversite) {
+        Universite universite = universiteRepository.findById(idUniversite).orElse(null);
+        Foyer savedFoyer = foyerRepository.save(foyer);
+
+        universite.setFoyer(savedFoyer);
+        universiteRepository.save(universite);
+        Set<Bloc> blocs = foyer.getBlocs();
+        if (blocs != null) {
+            for (Bloc bloc : blocs) {
+                bloc.setFoyer(savedFoyer);
+                blocRepository.save(bloc);
+            }
+        }
+
+        savedFoyer.setBlocs(blocs);
+        foyerRepository.save(savedFoyer);
+
+        return universite;
+
+    }
+}
